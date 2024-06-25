@@ -4,7 +4,7 @@ const util = require('util');
 const fsExists = util.promisify(fs.exists);
 
 // Path to your JSON file
-const filePath = './rockList.json';
+const filePath = './metadata.json';
 
 
 // Function to read JSON file and return an array of items
@@ -21,18 +21,20 @@ async function processItems() {
     try {
         const items = await readItemsFromFile(filePath);
         // console.log(items.toString());
-        for (let id of items) {
-            const path = `./rocks/${id}.png`;
+        for (i in items) {
+            console.log(items[i].id)
+            id=items[i].id
+            const path = `./poms/${id}.png`;
             const alreadyExists = await fsExists(path);
             if (!alreadyExists) {
                 const url = `https://api.hiro.so/ordinals/v1/inscriptions/${id}/content`;
                 await downloadWithRetry(url, path);
             } else {
-                // console.log(`File ${path} already exists. Skipping download.`);
+                console.log(`File ${path} already exists. Skipping download.`);
             }
         }
     } catch (error) {
-        // console.error('An error occurred:', error);
+        console.error('An error occurred:', error);
     }
 }
 
@@ -57,13 +59,13 @@ async function downloadWithRetry(url, path, retries = 3) {
             writer.on('error', () => reject(new Error('Failed to write the file')));
         });
     } catch (error) {
-        // console.error('Error downloading the image:', error);
+        console.error('Error downloading the image:', error);
         if (retries > 0) {
             console.log(`Retrying in 10 seconds... Remaining retries: ${retries}`);
             await new Promise(resolve => setTimeout(resolve, 20000)); // wait for 10 seconds
             return downloadWithRetry(url, path, retries - 1);
         } else {
-            // console.error('Max retries reached, moving to the next item.');
+            console.error('Max retries reached, moving to the next item.');
         }
     }
 }
