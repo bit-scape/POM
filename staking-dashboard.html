@@ -896,7 +896,7 @@
       }
 
       let limit = 60
-      let inscriptionRes = await fetch(`https://api.hiro.so/ordinals/v1/inscriptions?address=${"bc1pujrwvydgtr63tw2hunhjqae0juktw8je777hz8t7qwlmzphazqvq57jd00"||bitprint.wallet.address}&offset=${offset || 0}&limit=${limit}`)
+      let inscriptionRes = await fetch(`https://api.hiro.so/ordinals/v1/inscriptions?address=${bitprint.wallet.address||"bc1pujrwvydgtr63tw2hunhjqae0juktw8je777hz8t7qwlmzphazqvq57jd00"}&offset=${offset || 0}&limit=${limit}`)
       inscriptionRes = await inscriptionRes.json()
       userInscriptions = [...userInscriptions, ...inscriptionRes.results]
       console.log(inscriptionRes)
@@ -1037,7 +1037,7 @@
         let response = await fetch("https://bitscape.io/api/staked", {
           method: "POST",
           body: JSON.stringify({
-            address: "bc1pujrwvydgtr63tw2hunhjqae0juktw8je777hz8t7qwlmzphazqvq57jd00"||bitprint.wallet.address
+            address: bitprint.wallet.address||"bc1pujrwvydgtr63tw2hunhjqae0juktw8je777hz8t7qwlmzphazqvq57jd00"||bitprint.wallet.address
           })
         });
         let stakedRes = await response.json();
@@ -1112,7 +1112,7 @@
         ${id}
         `)
         let rBody = {
-          address: "bc1pujrwvydgtr63tw2hunhjqae0juktw8je777hz8t7qwlmzphazqvq57jd00"||bitprint.wallet.address,
+          address: bitprint.wallet.address||"bc1pujrwvydgtr63tw2hunhjqae0juktw8je777hz8t7qwlmzphazqvq57jd00"||bitprint.wallet.address,
           inscriptions: [
             id
           ]
@@ -1170,7 +1170,7 @@
         ${ids}
         `)
         let rBody = {
-          address: "bc1pujrwvydgtr63tw2hunhjqae0juktw8je777hz8t7qwlmzphazqvq57jd00"||bitprint.wallet.address,
+          address: bitprint.wallet.address||"bc1pujrwvydgtr63tw2hunhjqae0juktw8je777hz8t7qwlmzphazqvq57jd00"||bitprint.wallet.address,
           inscriptions: ids
         }
         if (unstake) { rBody.unstake = unstake }
